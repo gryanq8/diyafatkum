@@ -89,7 +89,7 @@ const supabaseClient = window.supabase.createClient(
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const { error } = await supabase.auth.signUp({
+  const { error } = await supabaseClient.auth.signUp({
     email: document.getElementById("email").value,
     password: document.getElementById("password").value,
     options: {
