@@ -1,111 +1,66 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>تسجيل الدخول</title>
 
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Tahoma,sans-serif;
-}
-
-body{
-background:#f4f5f7;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.box{
-
-background:white;
-padding:40px;
-width:380px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,.1);
-
-}
-
-h2{
-
-text-align:center;
-margin-bottom:25px;
-color:#8B1E3F;
-
-}
-
-input{
-
-width:100%;
-padding:14px;
-margin-bottom:15px;
-border:1px solid #ddd;
-border-radius:8px;
-
-}
-
-button{
-
-width:100%;
-padding:15px;
-background:#8B1E3F;
-color:white;
-border:none;
-border-radius:8px;
-font-size:16px;
-cursor:pointer;
-
-}
-
-a{
-
-display:block;
-margin-top:15px;
-text-align:center;
-text-decoration:none;
-
-}
-
-</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </head>
 
 <body>
 
-<div class="box">
-
 <h2>تسجيل الدخول</h2>
 
-<input
-type="email"
-placeholder="البريد الإلكتروني">
+<form id="loginForm">
 
-<input
-type="password"
-placeholder="كلمة المرور">
+<input id="email" type="email" placeholder="البريد الإلكتروني" required>
 
-<button>
+<input id="password" type="password" placeholder="كلمة المرور" required>
 
-دخول
+<button type="submit">دخول</button>
 
-</button>
+</form>
 
-<a href="register.html">
+<script>
 
-ليس لديك حساب؟ إنشاء حساب
+const supabase = window.supabase.createClient(
+"https://rhwzyuqhhrkvjqygpqso.supabase.co",
+"sb_publishable_H0e_mY2iZ92z1DUBIPaJ2g_WGvc78-Z"
+);
 
-</a>
+document.getElementById("loginForm").addEventListener("submit", async(e)=>{
 
-</div>
+e.preventDefault();
+
+const {data,error}=await supabase.auth.signInWithPassword({
+
+email:document.getElementById("email").value,
+password:document.getElementById("password").value
+
+});
+
+if(error){
+
+alert(error.message);
+return;
+
+}
+
+const role=data.user.user_metadata.role;
+
+if(role==="customer")
+location.href="customer-dashboard.html";
+
+else if(role==="provider")
+location.href="provider-dashboard.html";
+
+else
+location.href="admin-dashboard.html";
+
+});
+
+</script>
 
 </body>
-
 </html>
