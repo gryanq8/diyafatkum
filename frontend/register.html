@@ -1,133 +1,119 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تسجيل حساب</title>
 
-<title>إنشاء حساب</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Tahoma,sans-serif;
-}
-
 body{
-background:#f4f5f7;
+font-family:Arial;
+background:#f5f5f5;
 display:flex;
 justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.box{
-background:white;
 padding:40px;
-width:420px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,.1);
 }
 
-h2{
-text-align:center;
-margin-bottom:25px;
-color:#8B1E3F;
+form{
+background:white;
+padding:25px;
+width:400px;
+border-radius:10px;
+box-shadow:0 0 10px #ccc;
 }
 
-input,
-select{
+input,select,button{
 width:100%;
-padding:14px;
-margin-bottom:15px;
-border:1px solid #ddd;
-border-radius:8px;
+padding:10px;
+margin-top:10px;
 }
 
 button{
-width:100%;
-padding:15px;
-background:#8B1E3F;
+background:#0d6efd;
 color:white;
 border:none;
-border-radius:8px;
-font-size:16px;
 cursor:pointer;
 }
-
-a{
-display:block;
-margin-top:15px;
-text-align:center;
-text-decoration:none;
-}
-
 </style>
 
 </head>
 
 <body>
 
-<div class="box">
+<form id="registerForm">
 
 <h2>إنشاء حساب</h2>
 
-<input
-type="text"
-placeholder="الاسم الكامل">
+<input id="fullname" placeholder="الاسم الكامل" required>
 
-<input
-type="email"
-placeholder="البريد الإلكتروني">
+<input id="phone" placeholder="رقم الهاتف" required>
 
-<input
-type="tel"
-placeholder="رقم الهاتف">
+<input id="email" type="email" placeholder="البريد الإلكتروني" required>
 
-<input
-type="password"
-placeholder="كلمة المرور">
+<input id="password" type="password" placeholder="كلمة المرور" required>
 
-<select>
+<select id="role">
 
-<option>
+<option value="customer">عميل</option>
 
-اختر نوع الحساب
-
-</option>
-
-<option>
-
-عميل
-
-</option>
-
-<option>
-
-مقدمة خدمة
-
-</option>
+<option value="provider">مقدم خدمة</option>
 
 </select>
 
-<button>
+<button>تسجيل</button>
 
-إنشاء الحساب
+</form>
 
-</button>
+<script>
 
-<a href="login.html">
+const supabase = window.supabase.createClient(
 
-لديك حساب بالفعل؟
+"https://rhwzyuqhhrkvjqygpqso.supabase.co",
 
-</a>
+"ضع هنا Publishable Key"
 
-</div>
+);
+
+document.getElementById("registerForm").addEventListener("submit",async(e)=>{
+
+e.preventDefault();
+
+const {error}=await supabase.auth.signUp({
+
+email:email.value,
+
+password:password.value,
+
+options:{
+
+data:{
+
+full_name:fullname.value,
+
+phone:phone.value,
+
+role:role.value
+
+}
+
+}
+
+});
+
+if(error){
+
+alert(error.message);
+
+}else{
+
+alert("تم إنشاء الحساب");
+
+}
+
+});
+
+</script>
 
 </body>
-
 </html>
