@@ -1,112 +1,181 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>إنشاء حساب</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب</title>
 
-<style>
-body{
-  margin:0;
-  font-family:Tahoma,Arial,sans-serif;
-  background:#f6f7fb;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-}
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-.card{
-  background:white;
-  width:380px;
-  padding:30px;
-  border-radius:14px;
-  box-shadow:0 8px 25px rgba(0,0,0,.08);
-}
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Tahoma,Arial,sans-serif;
+        }
 
-h2{
-  text-align:center;
-  color:#8B1E3F;
-  margin-bottom:25px;
-}
+        body{
+            background:#f5f7fb;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:100vh;
+        }
 
-input,select,button{
-  width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  border-radius:8px;
-  border:1px solid #ddd;
-  font-size:15px;
-}
+        .card{
+            width:420px;
+            background:#fff;
+            border-radius:15px;
+            padding:35px;
+            box-shadow:0 10px 30px rgba(0,0,0,.08);
+        }
 
-button{
-  background:#8B1E3F;
-  color:white;
-  border:none;
-  cursor:pointer;
-  font-weight:bold;
-}
+        h2{
+            text-align:center;
+            color:#8c1d40;
+            margin-bottom:30px;
+        }
 
-a{
-  display:block;
-  text-align:center;
-  margin-top:10px;
-  color:#8B1E3F;
-  text-decoration:none;
-}
-</style>
+        input,
+        select{
+            width:100%;
+            padding:14px;
+            margin-bottom:15px;
+            border:1px solid #ddd;
+            border-radius:8px;
+            font-size:15px;
+        }
+
+        button{
+            width:100%;
+            padding:14px;
+            background:#8c1d40;
+            color:#fff;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        button:hover{
+            background:#6f1733;
+        }
+
+        a{
+            display:block;
+            text-align:center;
+            margin-top:20px;
+            color:#8c1d40;
+            text-decoration:none;
+        }
+    </style>
+
 </head>
 
 <body>
 
 <div class="card">
+
 <h2>إنشاء حساب</h2>
 
 <form id="registerForm">
-  <input id="fullname" placeholder="الاسم الكامل" required>
-  <input id="phone" placeholder="رقم الهاتف" required>
-  <input id="email" type="email" placeholder="البريد الإلكتروني" required>
-  <input id="password" type="password" placeholder="كلمة المرور" required>
 
-  <select id="role">
-    <option value="customer">عميل</option>
-    <option value="provider">مقدم خدمة</option>
-  </select>
+<input
+id="fullname"
+placeholder="الاسم الكامل"
+required>
 
-  <button type="submit">تسجيل</button>
+<input
+id="phone"
+placeholder="رقم الهاتف"
+required>
+
+<input
+id="email"
+type="email"
+placeholder="البريد الإلكتروني"
+required>
+
+<input
+id="password"
+type="password"
+placeholder="كلمة المرور"
+required>
+
+<select id="role">
+<option value="customer">عميل</option>
+<option value="provider">مقدم خدمة</option>
+</select>
+
+<button type="submit">
+تسجيل
+</button>
+
 </form>
 
-<a href="login.html">لديك حساب؟ تسجيل الدخول</a>
+<a href="login.html">
+لديك حساب؟ تسجيل الدخول
+</a>
+
 </div>
 
 <script>
-const supabaseClient = window.supabase.createClient(
-  "https://rhwzyuqhhrkvjqygpqso.supabase.co",
-  "sb_publishable_H0e_mY2iZ92z1DUBIPaJ2g_WGvc78-Z"
+
+const supabase = window.supabase.createClient(
+"https://rhwzyuqhhrkvjqygpqso.supabase.co",
+"sb_publishable_H0e_mY2iZ92z1DUBIPaJ2g_WGvc78-Z"
 );
 
-document.getElementById("registerForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+document.getElementById("registerForm").addEventListener("submit",async(e)=>{
 
-  const { error } = await supabaseClient.auth.signUp({
-    email: document.getElementById("email").value,
-    password: document.getElementById("password").value,
-    options: {
-      data: {
-        full_name: document.getElementById("fullname").value,
-        phone: document.getElementById("phone").value,
-        role: document.getElementById("role").value
-      }
-    }
-  });
+e.preventDefault();
 
-  if (error) {
-    alert(error.message);
-  } else {
-    alert("تم إنشاء الحساب بنجاح. تحقق من بريدك إذا طُلب ذلك.");
-  }
+const full_name=document.getElementById("fullname").value;
+const phone=document.getElementById("phone").value;
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+const role=document.getElementById("role").value;
+
+const {data,error}=await supabase.auth.signUp({
+
+email:email,
+password:password
+
 });
+
+if(error){
+
+alert(error.message);
+return;
+
+}
+
+const {error:profileError}=await supabase
+.from("profiles")
+.insert({
+
+id:data.user.id,
+full_name:full_name,
+phone:phone,
+role:role
+
+});
+
+if(profileError){
+
+alert(profileError.message);
+return;
+
+}
+
+alert("تم إنشاء الحساب بنجاح");
+
+window.location.href="login.html";
+
+});
+
 </script>
 
 </body>
