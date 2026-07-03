@@ -2,117 +2,55 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>تسجيل حساب</title>
-
+<title>إنشاء حساب</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-body{
-font-family:Arial;
-background:#f5f5f5;
-display:flex;
-justify-content:center;
-padding:40px;
-}
-
-form{
-background:white;
-padding:25px;
-width:400px;
-border-radius:10px;
-box-shadow:0 0 10px #ccc;
-}
-
-input,select,button{
-width:100%;
-padding:10px;
-margin-top:10px;
-}
-
-button{
-background:#0d6efd;
-color:white;
-border:none;
-cursor:pointer;
-}
-</style>
-
 </head>
 
 <body>
 
-<form id="registerForm">
-
 <h2>إنشاء حساب</h2>
 
-<input id="fullname" placeholder="الاسم الكامل" required>
+<form id="registerForm">
+  <input id="fullname" placeholder="الاسم الكامل" required>
+  <input id="phone" placeholder="رقم الهاتف" required>
+  <input id="email" type="email" placeholder="البريد الإلكتروني" required>
+  <input id="password" type="password" placeholder="كلمة المرور" required>
 
-<input id="phone" placeholder="رقم الهاتف" required>
+  <select id="role">
+    <option value="customer">عميل</option>
+    <option value="provider">مقدم خدمة</option>
+  </select>
 
-<input id="email" type="email" placeholder="البريد الإلكتروني" required>
-
-<input id="password" type="password" placeholder="كلمة المرور" required>
-
-<select id="role">
-
-<option value="customer">عميل</option>
-
-<option value="provider">مقدم خدمة</option>
-
-</select>
-
-<button>تسجيل</button>
-
+  <button type="submit">تسجيل</button>
 </form>
 
 <script>
-
 const supabase = window.supabase.createClient(
-
-"https://rhwzyuqhhrkvjqygpqso.supabase.co",
-
-"ضع هنا Publishable Key"
-
+  "https://rhwzyuqhhrkvjqygpqso.supabase.co",
+  "sb_publishable_H0e_mY2iZ92z1DUBIPaJ2g_WGvc78-Z"
 );
 
-document.getElementById("registerForm").addEventListener("submit",async(e)=>{
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-e.preventDefault();
+  const { error } = await supabase.auth.signUp({
+    email: document.getElementById("email").value,
+    password: document.getElementById("password").value,
+    options: {
+      data: {
+        full_name: document.getElementById("fullname").value,
+        phone: document.getElementById("phone").value,
+        role: document.getElementById("role").value
+      }
+    }
+  });
 
-const {error}=await supabase.auth.signUp({
-
-email:email.value,
-
-password:password.value,
-
-options:{
-
-data:{
-
-full_name:fullname.value,
-
-phone:phone.value,
-
-role:role.value
-
-}
-
-}
-
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("تم إنشاء الحساب بنجاح");
+  }
 });
-
-if(error){
-
-alert(error.message);
-
-}else{
-
-alert("تم إنشاء الحساب");
-
-}
-
-});
-
 </script>
 
 </body>
